@@ -41,7 +41,7 @@ public class UserDaoImpl implements UserDao {
 
         Connection connection = connector.getConnection();
         if (connection == null) {
-            System.out.println("addUser() - Could not establish a connection to the database.");
+            System.out.println("Could not establish a connection to the database.");
             return false;
         }
 
@@ -57,9 +57,9 @@ public class UserDaoImpl implements UserDao {
             int rowsAdded = ps.executeUpdate();
             return rowsAdded == 1;
         } catch (SQLIntegrityConstraintViolationException exception) {
-            System.out.println("addUser() - Username or email is already registered.");
+            System.out.println("Username or email is already registered.");
         } catch (SQLException exception) {
-            System.out.println("addUser() - The SQL query could not be prepared or executed.");
+            System.out.println("The SQL query could not be prepared or executed.");
         }
 
         return false;
@@ -75,7 +75,7 @@ public class UserDaoImpl implements UserDao {
     public User findByUsername(String username) {
         Connection connection = connector.getConnection();
         if (connection == null) {
-            System.out.println("findByUsername() - Could not establish a connection to the database.");
+            System.out.println("Could not establish a connection to the database.");
             return null;
         }
 
@@ -97,7 +97,7 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         } catch (SQLException exception) {
-            System.out.println("findByUsername() - The SQL query could not be prepared or executed.");
+            System.out.println("The SQL query could not be prepared or executed.");
         }
 
         return null;
@@ -114,7 +114,7 @@ public class UserDaoImpl implements UserDao {
     public boolean updatePasswordHash(int userId, String passwordHash) {
         Connection connection = connector.getConnection();
         if (connection == null) {
-            System.out.println("updatePasswordHash() - Could not establish a connection to the database.");
+            System.out.println("Could not establish a connection to the database.");
             return false;
         }
 
@@ -127,7 +127,7 @@ public class UserDaoImpl implements UserDao {
             int rowsUpdated = ps.executeUpdate();
             return rowsUpdated == 1;
         } catch (SQLException exception) {
-            System.out.println("updatePasswordHash() - The SQL query could not be prepared or executed.");
+            System.out.println("The SQL query could not be prepared or executed.");
         }
 
         return false;
