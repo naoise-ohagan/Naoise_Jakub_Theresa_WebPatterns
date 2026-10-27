@@ -27,7 +27,7 @@ public interface UserDao {
      * @param username username to search for
      * @return the matching user, or null if the user does not exist
      */
-    User findByUsername(String username);
+    User getUserByUsername(String username);
 
     /**
      * Updates the stored password hash for a user.

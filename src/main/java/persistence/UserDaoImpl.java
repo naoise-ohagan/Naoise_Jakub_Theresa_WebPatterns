@@ -72,7 +72,7 @@ public class UserDaoImpl implements UserDao {
      * @return the matching user, or null if the user does not exist
      */
     @Override
-    public User findByUsername(String username) {
+    public User getUserByUsername(String username) {
         Connection connection = connector.getConnection();
         if (connection == null) {
             System.out.println("Could not establish a connection to the database.");
