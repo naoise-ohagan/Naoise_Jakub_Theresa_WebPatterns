@@ -30,15 +30,15 @@ public class UserDaoImpl implements UserDao {
     /**
      * Adds a new user to the users table.
      *
-     * @param user user data to add
+     * @param username username used to log in
+     * @param firstName user's first name
+     * @param surname user's surname
+     * @param email user's email address
+     * @param passwordHash BCrypt hash of the user's password
      * @return true if one user was added, otherwise false
      */
     @Override
-    public boolean addUser(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User cannot be null.");
-        }
-
+    public boolean addUser(String username, String firstName, String surname, String email, String passwordHash) {
         Connection connection = connector.getConnection();
         if (connection == null) {
             System.out.println("Could not establish a connection to the database.");
@@ -48,11 +48,11 @@ public class UserDaoImpl implements UserDao {
         String sql = "INSERT INTO users (username, first_name, surname, email, password_hash) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, user.username());
-            ps.setString(2, user.firstName());
-            ps.setString(3, user.surname());
-            ps.setString(4, user.email());
-            ps.setString(5, user.passwordHash());
+            ps.setString(1, username);
+            ps.setString(2, firstName);
+            ps.setString(3, surname);
+            ps.setString(4, email);
+            ps.setString(5, passwordHash);
 
             int rowsAdded = ps.executeUpdate();
             return rowsAdded == 1;
