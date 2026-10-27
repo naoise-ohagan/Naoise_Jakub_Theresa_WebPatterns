@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
  * MySQL implementation of the user data access object.
@@ -31,17 +32,17 @@ public class UserDaoImpl implements UserDao {
      *
      * @param user user data to add
      * @return true if one user was added, otherwise false
-     * @throws SQLException if a connection cannot be established or the query fails
      */
     @Override
-    public boolean addUser(User user) throws SQLException {
+    public boolean addUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null.");
         }
 
         Connection connection = connector.getConnection();
         if (connection == null) {
-            throw new SQLException("Could not establish a connection to the database.");
+            System.out.println("addUser() - Could not establish a connection to the database.");
+            return false;
         }
 
         String sql = "INSERT INTO users (username, first_name, surname, email, password_hash) VALUES (?, ?, ?, ?, ?)";
@@ -55,7 +56,13 @@ public class UserDaoImpl implements UserDao {
 
             int rowsAdded = ps.executeUpdate();
             return rowsAdded == 1;
+        } catch (SQLIntegrityConstraintViolationException exception) {
+            System.out.println("addUser() - Username or email is already registered.");
+        } catch (SQLException exception) {
+            System.out.println("addUser() - The SQL query could not be prepared or executed.");
         }
+
+        return false;
     }
 
     /**
@@ -63,13 +70,13 @@ public class UserDaoImpl implements UserDao {
      *
      * @param username username to search for
      * @return the matching user, or null if the user does not exist
-     * @throws SQLException if a connection cannot be established or the query fails
      */
     @Override
-    public User findByUsername(String username) throws SQLException {
+    public User findByUsername(String username) {
         Connection connection = connector.getConnection();
         if (connection == null) {
-            throw new SQLException("Could not establish a connection to the database.");
+            System.out.println("findByUsername() - Could not establish a connection to the database.");
+            return null;
         }
 
         String sql = "SELECT * FROM users WHERE username = ?";
@@ -89,6 +96,8 @@ public class UserDaoImpl implements UserDao {
                     );
                 }
             }
+        } catch (SQLException exception) {
+            System.out.println("findByUsername() - The SQL query could not be prepared or executed.");
         }
 
         return null;
@@ -100,13 +109,13 @@ public class UserDaoImpl implements UserDao {
      * @param userId ID of the user to update
      * @param passwordHash new BCrypt password hash
      * @return true if one user's password was updated, otherwise false
-     * @throws SQLException if a connection cannot be established or the query fails
      */
     @Override
-    public boolean updatePasswordHash(int userId, String passwordHash) throws SQLException {
+    public boolean updatePasswordHash(int userId, String passwordHash) {
         Connection connection = connector.getConnection();
         if (connection == null) {
-            throw new SQLException("Could not establish a connection to the database.");
+            System.out.println("updatePasswordHash() - Could not establish a connection to the database.");
+            return false;
         }
 
         String sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
@@ -117,7 +126,11 @@ public class UserDaoImpl implements UserDao {
 
             int rowsUpdated = ps.executeUpdate();
             return rowsUpdated == 1;
+        } catch (SQLException exception) {
+            System.out.println("updatePasswordHash() - The SQL query could not be prepared or executed.");
         }
+
+        return false;
     }
 
 

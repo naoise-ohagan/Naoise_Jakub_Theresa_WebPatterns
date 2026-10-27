@@ -1,7 +1,7 @@
 package dtos;
 
 /**
- * Stores safe user data transferred from the repository to the application.
+ * Stores user data transferred from the repository to the application.
  *
  * @param userId unique ID of the user
  * @param username username used to log in
