@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AlbumDAO {
     List<Album> getAlbumByArtist(int artistID);
+
+    List<Album>getAllAlbums();
 }
