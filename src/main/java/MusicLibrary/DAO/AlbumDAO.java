@@ -6,5 +6,5 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface AlbumDAO {
-    List<Album> getAlbumByArtist(int artistID) throws SQLException;
+    List<Album> getAlbumByArtist(int artistID);
 }
