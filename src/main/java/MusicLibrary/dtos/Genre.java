@@ -8,4 +8,7 @@ public record Genre(int genreID, String name) {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    public void add(Genre genre) {
+    }
 }
